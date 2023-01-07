@@ -1,29 +1,27 @@
 import express, { Request, Response, NextFunction } from "express";
 import logger from "morgan";
-// const  fs =  require( "fs")
-import * as fs from 'fs';
+import userRouter from './router/usersRoutes';
+import tourRouter from './router/toursRoutes'
 
 const app = express()
+//1)Middlewares
 
-app.use(express.json())
+
+
 app.use(logger('dev'))
+app.use(express.json())
 
-const tours = JSON.parse(fs.readFileSync('./dev-data/data/tours-simple.json',"utf8"))
-// app.get("/", (req:Request, res:Response)=>{
-//     return res.status(200).json({message:"Hello World"})
+//2) Route Handlers
 
-// })
-app.get("/api/v1/tours", (req:Request, res:Response)=>{
-        return res.status(200).json({
-            status:'success',
-            data:{
-                tours
-            }
-        })
-    
-    })
 
+ //3) Routes
+app.use('/api/v1/users', userRouter )
+app.use('/api/v1/tours', tourRouter )
+
+    //4) Server
 const port = 4010
 app.listen(port, ()=>{
-    console.log(`Server running on Port:${port}`)
+    console.log(`Server running on Port:${port} 15`)
 })
+
+export default app
